@@ -1,0 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* --- FULLCALENDAR KOYU TEMA AYARLARI --- */
+.fc {
+  color: #fff !important; /* Tüm yazılar beyaz olsun */
+}
+
+/* Izgara çizgileri ve kenarlıklar koyu gri olsun */
+.fc-theme-standard td, 
+.fc-theme-standard th, 
+.fc-theme-standard .fc-scrollgrid {
+  border-color: #444 !important; 
+}
+
+/* Üstteki Butonların Tasarımı (Bugün, İleri, Geri) */
+.fc-button-primary {
+  background-color: #333 !important;
+  border-color: #555 !important;
+  text-transform: capitalize !important;
+}
+.fc-button-primary:hover {
+  background-color: #555 !important;
+}
+
+/* Gün isimleri ve saat yazıları rengi */
+.fc-col-header-cell-cushion, 
+.fc-daygrid-day-number, 
+.fc-timegrid-slot-label-cushion {
+  color: #ddd !important;
+  text-decoration: none !important;
+}
+
+/* Saat çizgileri attığın fotoğraftaki gibi kesik kesik ve hafif olsun */
+.fc-timegrid-slot {
+  border-bottom: 1px dashed #333 !important; 
+}
