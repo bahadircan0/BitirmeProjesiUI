@@ -1,9 +1,32 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function SidebarLayout() {
   const navigate = useNavigate();
+  const [userRole, setUserRole] = useState(null);
 
-  // Çıkış yap butonuna basınca token'ı sil ve Login'e at
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    
+    if (token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        const decodedToken = JSON.parse(jsonPayload);
+        
+        const role = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decodedToken["role"];
+        
+        setUserRole(role);
+      } catch (error) {
+        console.error("Token çözümlenemedi:", error);
+      }
+    }
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -12,22 +35,23 @@ function SidebarLayout() {
   return (
     <div style={{ display: "flex", height: "100vh", backgroundColor: "#191919", color: "#fff", fontFamily: "sans-serif" }}>
       
-      {/* SOL MENÜ (SIDEBAR) */}
       <div style={{ width: "240px", backgroundColor: "#202020", borderRight: "1px solid #333", padding: "20px", display: "flex", flexDirection: "column" }}>
         
-        {/* Logo Alanı */}
         <h2 style={{ margin: 0, paddingBottom: "20px", borderBottom: "1px solid #333" }}>
-          🎯 Proje Logo
+          🎯 
         </h2>
 
-        {/* Linkler */}
         <nav style={{ display: "flex", flexDirection: "column", gap: "15px", marginTop: "20px" }}>
           <Link to="/dashboard" style={{ color: "#ddd", textDecoration: "none", fontSize: "16px" }}>🏠 Ana Sayfa</Link>
           <Link to="/meetings" style={{ color: "#ddd", textDecoration: "none", fontSize: "16px" }}>📅 Toplantılarım</Link>
+          
+          {userRole === "Student" && (
+            <Link to="/my-teachers" style={{ color: "#ddd", textDecoration: "none", fontSize: "16px" }} className="menu-item">👨‍🏫 Hocalarım</Link>
+          )}
+
           <Link to="#" style={{ color: "#ddd", textDecoration: "none", fontSize: "16px" }}>⚙️ Ayarlar</Link>
         </nav>
 
-        {/* En alta yapışan Çıkış Butonu */}
         <div style={{ marginTop: "auto" }}>
           <button 
             onClick={handleLogout} 
@@ -38,9 +62,7 @@ function SidebarLayout() {
         </div>
       </div>
 
-      {/* SAĞ TARAFTAKİ ANA İÇERİK ALANI */}
       <div style={{ flex: 1, padding: "40px", overflowY: "auto" }}>
-        {/* <Outlet /> React Router'ın sihirli kelimesidir. Menüden ne seçilirse buraya o sayfa yüklenir! */}
         <Outlet /> 
       </div>
 
