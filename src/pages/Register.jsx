@@ -3,15 +3,14 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 function Register() {
-  // Form verileri
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [roleId, setRoleId] = useState(2); // Varsayılan 2 (Öğrenci) olsun
-  const [teacherEmail, setTeacherEmail] = useState(""); // Sadece öğrenciler dolduracak
+  const [roleId, setRoleId] = useState(2); 
+  const [teacherEmail, setTeacherEmail] = useState(""); 
   
-  // Mesajlar
+  
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   
@@ -23,28 +22,28 @@ function Register() {
     setSuccess("");
 
     try {
-      // Backend'e yollayacağımız veri paketi (DTO'muz ile birebir aynı isimler!)
+    
       const requestData = {
         name: name,
         surname: surname,
         email: email,
         password: password,
-        roleId: Number(roleId), // Backend integer beklediği için sayıya çeviriyoruz
-        teacherEmail: Number(roleId) === 2 ? teacherEmail : null // Sadece öğrenciyse hoca maili gitsin
+        roleId: Number(roleId), 
+        teacherEmail: Number(roleId) === 2 ? teacherEmail : null 
       };
 
-      // Kendi Swagger portunu buraya yazmayı unutma!
+      
       await axios.post("https://localhost:7080/api/Auth/register", requestData);
 
       setSuccess("Kayıt başarıyla tamamlandı! 🎉 Giriş sayfasına yönlendiriliyorsunuz...");
       
-      // Başarılı olursa 2 saniye bekleyip Login sayfasına atıyoruz
+      
       setTimeout(() => {
         navigate("/login");
       }, 2000);
 
     } catch (err) {
-      // Backend'den gelen BadRequest mesajını ekrana bas (Örn: "Bu e-posta zaten kullanılıyor" vs.)
+      
       setError(err.response?.data || "Kayıt olurken bir hata oluştu.");
     }
   };
@@ -91,7 +90,6 @@ function Register() {
             </select>
           </div>
 
-          {/* DİKKAT: Sadece Öğrenci (2) seçiliyse bu kutu görünür! */}
           {Number(roleId) === 2 && (
             <div style={{ marginBottom: "15px", padding: "10px", backgroundColor: "#f9f9f9", border: "1px dashed #ccc" }}>
               <label>Hocanızın E-posta Adresi</label>

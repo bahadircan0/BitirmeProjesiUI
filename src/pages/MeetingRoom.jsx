@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import * as signalR from "@microsoft/signalr";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
-import DailyIframe from "@daily-co/daily-js"; // YENİ EKLENDİ
+import DailyIframe from "@daily-co/daily-js"; 
 
 function MeetingRoom() {
   const { id } = useParams();
@@ -15,14 +15,13 @@ function MeetingRoom() {
   const [isRunning, setIsRunning] = useState(false);
   
   const connectionRef = useRef(null);
-  const videoContainerRef = useRef(null); // YENİ: Iframe'in içine yerleşeceği kutu
-  const callFrameRef = useRef(null); // YENİ: Daily bağlantısını yöneteceğimiz referans
+  const videoContainerRef = useRef(null); 
+  const callFrameRef = useRef(null); 
 
   const token = localStorage.getItem("token");
   const userRole = localStorage.getItem("userRole");
   const isTeacher = userRole === "Teacher" || userRole === "1";
 
-  // 1. Backend'den Join URL'yi al
   useEffect(() => {
     const fetchJoinUrl = async () => {
       try {
@@ -38,15 +37,11 @@ function MeetingRoom() {
     fetchJoinUrl();
   }, [id, token]);
 
-  // 2. KESİN ÇÖZÜM: Daily-js ile Iframe'i oluştur ve eventleri dinle
   useEffect(() => {
-    // Eğer url yoksa veya div henüz render olmadıysa bekle
     if (!joinUrl || !videoContainerRef.current) return;
     
-    // Eğer callFrame zaten oluşturulduysa tekrar oluşturma (React Strict Mode koruması)
     if (callFrameRef.current) return;
 
-    // Daily Iframe'i bizim belirttiğimiz Div'in içine yerleştiriyoruz
     const callFrame = DailyIframe.createFrame(videoContainerRef.current, {
       showLeaveButton: true,
       iframeStyle: {
@@ -60,13 +55,11 @@ function MeetingRoom() {
 
     callFrame.join({ url: joinUrl });
 
-    // AYRILMA EVENTİNİ DİNLE (Artık %100 çalışacak)
     callFrame.on("left-meeting", () => {
       console.log("Kullanıcı toplantıdan ayrıldı, anasayfaya yönlendiriliyor...");
-      navigate("/dashboard"); // Anasayfaya yönlendir
+      navigate("/dashboard"); 
     });
 
-    // Component unmount olduğunda temizlik yap (Odayı kapat)
     return () => {
       if (callFrameRef.current) {
         callFrameRef.current.leave().then(() => {
@@ -77,7 +70,6 @@ function MeetingRoom() {
     };
   }, [joinUrl, navigate]);
 
-  // 3. SignalR bağlantısı kur
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl("https://localhost:7080/hubs/code", {
@@ -171,10 +163,10 @@ function MeetingRoom() {
   return (
     <div style={{ display: "flex", height: "100vh", backgroundColor: "#1a1a1a", overflow: "hidden" }}>
       
-      {/* SOL: Daily.co Video Kapsayıcısı */}
+  
       <div style={{ width: "55%", height: "100%", borderRight: "2px solid #333" }}>
         {joinUrl ? (
-          /* YENİ: Iframe yerine bu div'i kullanıyoruz, Daily iframe'i bunun içine enjekte ediyor */
+          
           <div ref={videoContainerRef} style={{ width: "100%", height: "100%" }} />
         ) : (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#888" }}>
@@ -183,7 +175,7 @@ function MeetingRoom() {
         )}
       </div>
 
-      {/* SAĞ: Kod Editörü */}
+      
       <div style={{ width: "45%", display: "flex", flexDirection: "column", height: "100%" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", backgroundColor: "#252525", borderBottom: "1px solid #333" }}>
           

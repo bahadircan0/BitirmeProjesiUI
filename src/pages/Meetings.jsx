@@ -104,7 +104,7 @@ function Meetings() {
     }
   };
 
-  // Toplantıya tıklanınca detay modalını aç
+  
   const handleEventClick = (info) => {
     setSelectedEvent({
       id: info.event.id,           // bunu ekle
@@ -172,7 +172,7 @@ function Meetings() {
         />
       </div>
 
-      {/* TOPLANTI DETAY MODALI */}
+   
       {detailModalOpen && selectedEvent && (
         <div style={overlayStyle}>
           <div style={modalBoxStyle}>
@@ -212,7 +212,7 @@ function Meetings() {
         </div>
       )}
 
-      {/* TOPLANTI OLUŞTUR MODALI */}
+      
       {modalOpen && (
         <div style={overlayStyle}>
           <div style={modalBoxStyle}>
@@ -262,7 +262,6 @@ function Meetings() {
   );
 }
 
-// --- STİLLER ---
 const inputStyle = { width: "100%", padding: "10px", marginTop: "5px", marginBottom: "15px", borderRadius: "5px", border: "1px solid #444", backgroundColor: "#191919", color: "#fff", boxSizing: "border-box" };
 const labelStyle = { color: "#ccc", fontSize: "13px", fontWeight: "600" };
 const overlayStyle = { position: "absolute", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.85)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1100 };
