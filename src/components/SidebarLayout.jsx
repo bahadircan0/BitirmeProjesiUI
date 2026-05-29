@@ -49,7 +49,7 @@ function SidebarLayout() {
             <Link to="/my-teachers" style={{ color: "#ddd", textDecoration: "none", fontSize: "16px" }} className="menu-item">👨‍🏫 Hocalarım</Link>
           )}
 
-          <Link to="#" style={{ color: "#ddd", textDecoration: "none", fontSize: "16px" }}>⚙️ Ayarlar</Link>
+          <Link to="/settings" style={{ color: "#ddd", textDecoration: "none", fontSize: "16px" }}>⚙️ Ayarlar</Link>
         </nav>
 
         <div style={{ marginTop: "auto" }}>
