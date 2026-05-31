@@ -78,12 +78,19 @@ function MeetingRoom() {
       .withAutomaticReconnect()
       .build();
 
+    
     connection.on("ReceiveCode", (newCode) => {
       setCode(newCode);
     });
 
+    
     connection.on("ReceiveLanguage", (newLanguage) => {
       setLanguage(newLanguage);
+    });
+
+    
+    connection.on("ReceiveCodeOutput", (incomingOutput) => {
+      setOutput(incomingOutput); 
     });
 
     connection.start()
@@ -124,6 +131,11 @@ function MeetingRoom() {
     setIsRunning(true);
     setOutput("Derleniyor...");
 
+    
+    if (connectionRef.current?.state === signalR.HubConnectionState.Connected) {
+      connectionRef.current.invoke("SendCodeOutput", id.toString(), "Derleniyor...");
+    }
+
     const languageIds = {
       javascript: 63,
       python: 71,
@@ -146,7 +158,17 @@ function MeetingRoom() {
           },
         }
       );
-      setOutput(response.data.output);
+
+      const finalOutput = response.data.output;
+      
+      
+      setOutput(finalOutput);
+
+     
+      if (connectionRef.current?.state === signalR.HubConnectionState.Connected) {
+        await connectionRef.current.invoke("SendCodeOutput", id.toString(), finalOutput);
+      }
+
     } catch (err) {
       const errorMessage = 
         err.response?.data?.message || 
@@ -154,7 +176,15 @@ function MeetingRoom() {
         JSON.stringify(err.response?.data) || 
         err.message;
         
-      setOutput("Hata Detayı:\n" + errorMessage);
+      const finalError = "Hata Detayı:\n" + errorMessage;
+      
+   
+      setOutput(finalError);
+
+      
+      if (connectionRef.current?.state === signalR.HubConnectionState.Connected) {
+        await connectionRef.current.invoke("SendCodeOutput", id.toString(), finalError);
+      }
     } finally {
       setIsRunning(false);
     }
@@ -163,10 +193,9 @@ function MeetingRoom() {
   return (
     <div style={{ display: "flex", height: "100vh", backgroundColor: "#1a1a1a", overflow: "hidden" }}>
       
-  
+      
       <div style={{ width: "55%", height: "100%", borderRight: "2px solid #333" }}>
         {joinUrl ? (
-          
           <div ref={videoContainerRef} style={{ width: "100%", height: "100%" }} />
         ) : (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#888" }}>

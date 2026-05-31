@@ -107,7 +107,7 @@ function Meetings() {
   
   const handleEventClick = (info) => {
     setSelectedEvent({
-      id: info.event.id,           // bunu ekle
+      id: info.event.id,          
       title: info.event.title,
       description: info.event.extendedProps.description,
       start: info.event.start,

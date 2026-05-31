@@ -3,7 +3,7 @@ function Dashboard() {
     <div>
       <h1>Hoş Geldin! 👋</h1>
       <p style={{ color: "#aaa" }}>
-        Sisteme başarıyla giriş yaptın. Sol menüden takvimine veya ayarlarına gidebilirsin.
+        Sisteme başarıyla giriş yaptın. Sol menüden devam edebilirsin.
       </p>
     </div>
   );

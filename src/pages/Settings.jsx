@@ -72,7 +72,6 @@ function Settings() {
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", position: "relative" }}>
       
-      {/* Üst Başlık Alanı (Hocalarım tasarımı ile tam uyumlu) */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", borderBottom: "1px solid #333", paddingBottom: "10px" }}>
         <h2 style={{ margin: 0, color: "#fff" }}>⚙️ Profil Ayarları</h2>
       </div>
